@@ -30,11 +30,11 @@ Comment.init(
 Comment.belongsTo(User, { foreignKey: 'user_id' });
 Comment.belongsTo(Post, { foreignKey: 'post_id' });
 
-try{
+/*try{
     Comment.sync();
     console.log("Table created with success");
 }catch(error) {
     console.log("Error: " + error);
-}
+}*/
 
 export { Comment };
