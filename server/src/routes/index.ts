@@ -15,5 +15,6 @@ router.get("/post", authenticateToken, postController.getAll);
 router.get("/post/:id_post", authenticateToken, postController.getById);
 router.delete("/post", authenticateToken, postController.deleteAll);
 router.delete("/post/:id_post", authenticateToken, postController.deleteById);
- 
+router.put("/post/:id_post", authenticateToken, postController.updateById);
+
 export default router;
