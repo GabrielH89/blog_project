@@ -1,20 +1,26 @@
 import express from 'express';
 import userController from '../controllers/userController';
 import postController from '../controllers/postController';
+import commentController from '../controllers/commentController';
 import { authenticateToken } from '../middleware/authAuthentication';
 
 const router = express.Router();
 
 //Routes from users
-router.post("/signUp", userController.signUp);
-router.post("/signIn", userController.signIn);
+router.post("/signup", userController.signUp);
+router.post("/signin", userController.signIn);
 
 //Routes from posts
-router.post("/post", authenticateToken, postController.create);
-router.get("/post", authenticateToken, postController.getAll);
-router.get("/post/:id_post", authenticateToken, postController.getById);
-router.delete("/post", authenticateToken, postController.deleteAll);
-router.delete("/post/:id_post", authenticateToken, postController.deleteById);
-router.put("/post/:id_post", authenticateToken, postController.updateById);
+router.post("/posts", authenticateToken, postController.create);
+router.get("/posts", authenticateToken, postController.getAll);
+router.get("/posts/:id_post", authenticateToken, postController.getById);
+router.delete("/posts", authenticateToken, postController.deleteAll);
+router.delete("/posts/:id_post", authenticateToken, postController.deleteById);
+router.put("/posts/:id_post", authenticateToken, postController.updateById);
+
+//Routes from comments
+router.post("/comments", authenticateToken, commentController.create);
+router.put("/comments/:id_comment", authenticateToken, commentController.updateById);
+router.get("/comments/:id_post", authenticateToken, commentController.getAllByPostId);
 
 export default router;

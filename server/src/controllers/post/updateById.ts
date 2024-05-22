@@ -8,7 +8,6 @@ export const updateById = async (req: CustomRequest, res: Response) => {
         const currentDate = new Date();
         const userId = req.user?.user_id;
         const postId = req.params.id_post;
-
         
         if(!title || !body) {
             return res.status(400).json({msg: "Please, insert all required inputs"})
