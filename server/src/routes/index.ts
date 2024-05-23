@@ -22,5 +22,6 @@ router.put("/posts/:id_post", authenticateToken, postController.updateById);
 router.post("/comments", authenticateToken, commentController.create);
 router.put("/comments/:id_comment", authenticateToken, commentController.updateById);
 router.get("/comments/:id_post", authenticateToken, commentController.getAllByPostId);
+router.delete("/comments/:id_comment", authenticateToken, commentController.deleteById);
 
 export default router;

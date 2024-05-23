@@ -11,7 +11,7 @@ export const deleteAll = async (req: CustomRequest, res: Response) => {
         });
 
         if(postsToDelete.length === 0){
-            return res.status(404).json({msg: "No posts found to delete"});
+            return res.status(404).json({msg: "Posts not found or you have no permission to delete it"});
         }
 
         Post.destroy({
