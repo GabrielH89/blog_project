@@ -20,7 +20,7 @@ export const create = async (req: CustomRequest, res: Response) => {
             return res.status(400).json({msg: "Title input has more than 55 caracters"});
         }
 
-        if(body.length > 400) {
+        if(body.length > 6000) {
             return res.status(400).json({msg: "Body input has more than 400 caracters"});
         }
 

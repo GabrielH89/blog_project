@@ -1,6 +1,6 @@
 import {Sequelize} from 'sequelize';
 
-const connection = new Sequelize({
+const sequelize = new Sequelize({
     database: process.env.DB_DATABASE,
     dialect: "mysql",
     username: process.env.DB_USERNAME,
@@ -8,7 +8,7 @@ const connection = new Sequelize({
     host: process.env.DB_HOST,
 })
 
-connection.authenticate()
+sequelize.authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');
   })
@@ -16,4 +16,4 @@ connection.authenticate()
     console.error('Unable to connect to the database:', err);
 });
 
-export {connection};
+export {sequelize};

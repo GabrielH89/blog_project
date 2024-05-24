@@ -1,5 +1,5 @@
-import { DataTypes, Model } from 'sequelize';
-import { connection } from '../config/connection';
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../config/connection'; // ajuste o caminho conforme necessário
 
 class User extends Model {
     public user_id!: number;
@@ -30,9 +30,9 @@ User.init(
         },
     },
     {
-        sequelize: connection,
+        sequelize,
         tableName: 'users',
-        timestamps: false, // Se não houver colunas 'createdAt' e 'updatedAt' na tabela
+        timestamps: false,
     }
 );
 
@@ -42,6 +42,5 @@ User.init(
 }catch(error) {
     console.log("Error: " + error);
 }*/
-
 
 export { User };
