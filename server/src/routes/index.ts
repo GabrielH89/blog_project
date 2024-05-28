@@ -2,6 +2,7 @@ import express from 'express';
 import userController from '../controllers/userController';
 import postController from '../controllers/postController';
 import commentController from '../controllers/commentController';
+import likeController from '../controllers/likeController';
 import { authenticateToken } from '../middleware/authAuthentication';
 
 const router = express.Router();
@@ -24,5 +25,11 @@ router.post("/comments", authenticateToken, commentController.create);
 router.put("/comments/:id_comment", authenticateToken, commentController.updateById);
 router.get("/comments/:id_post", authenticateToken, commentController.getAllByPostId);
 router.delete("/comments/:id_comment", authenticateToken, commentController.deleteById);
+
+//Routes from likes
+router.post("/likes", authenticateToken, likeController.create);
+router.delete("/likes", authenticateToken, likeController.remove);
+router.get("/likes/count/:postId", authenticateToken, likeController.count);
+router.get("/likes/:postId", authenticateToken, likeController.getAllLikesByPost);
 
 export default router;

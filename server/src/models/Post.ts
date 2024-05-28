@@ -41,11 +41,11 @@ Post.belongsTo(User, {
     onDelete: 'CASCADE',
 });
 
-try{
+/*try{
     Post.sync();
     console.log("Table created with success");
 }catch(error) {
     console.log("Error: " + error);
-}
+}*/
 
 export { Post };
