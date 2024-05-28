@@ -1,0 +1,76 @@
+.signInForm {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.signInForm h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.signInForm label {
+  display: block;
+  margin-bottom: 8px;
+  color: #666;
+  font-size: 1.3rem;
+}
+
+.signInForm input[type="email"],
+.signInForm input[type="password"] {
+  width: calc(100% - 20px); /* Considerando padding de 10px em cada lado */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.signInForm button {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.signInForm button:hover {
+    background-color: #00FF00;
+    transition: 0.3s;
+}
+
+.signInForm p {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.signInForm p a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.signInForm p a:hover {
+  text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .signInForm {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .signInForm {
+    width: 100%;
+  }
+}
