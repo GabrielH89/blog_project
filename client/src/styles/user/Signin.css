@@ -62,6 +62,18 @@
   text-decoration: underline;
 }
 
+//Mensagem de erro
+.error-message {
+  background: #B22222;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 10rem;
+}
+
+
 /* Responsividade */
 @media (max-width: 600px) {
   .signInForm {
