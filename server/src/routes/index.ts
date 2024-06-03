@@ -3,6 +3,7 @@ import userController from '../controllers/userController';
 import postController from '../controllers/postController';
 import commentController from '../controllers/commentController';
 import likeController from '../controllers/likeController';
+import ratingController from '../controllers/ratingController';
 import { authenticateToken } from '../middleware/authAuthentication';
 
 const router = express.Router();
@@ -28,8 +29,14 @@ router.delete("/comments/:id_comment", authenticateToken, commentController.dele
 
 //Routes from likes
 router.post("/likes", authenticateToken, likeController.create);
-router.delete("/likes", authenticateToken, likeController.remove);
+router.delete("/likes/:postId", authenticateToken, likeController.remove);
 router.get("/likes/count/:postId", authenticateToken, likeController.count);
 router.get("/likes/:postId", authenticateToken, likeController.getAllLikesByPost);
 
+//routes from ratings
+router.post("/ratings", authenticateToken, ratingController.create);
+router.delete("/ratings/:postId", authenticateToken, ratingController.remove);
+
 export default router;
+
+

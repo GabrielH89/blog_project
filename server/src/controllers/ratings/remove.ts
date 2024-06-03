@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Like } from '../../models/Like';
+import { Rating } from '../../models/Rating';
 import { CustomRequest } from '../../middleware/authAuthentication';
 
 export const remove = async (req: CustomRequest, res: Response): Promise<Response> => {
@@ -11,19 +11,19 @@ export const remove = async (req: CustomRequest, res: Response): Promise<Respons
             return res.status(400).json({ msg: "Post ID is required" });
         }
 
-        const likeToDelete = await Like.findOne({
+        const ratingToDelete = await Rating.findOne({
             where: {
                 user_id: userId,
                 post_id: postId
             }
         });
 
-        if (!likeToDelete) {
-            return res.status(404).json({ msg: "Like not found" });
+        if (!ratingToDelete) {
+            return res.status(404).json({ msg: "Rating not found" });
         }
 
-        await likeToDelete.destroy();
-        return res.status(200).json({ msg: "Like removed successfully" });
+        await ratingToDelete.destroy();
+        return res.status(200).json({ msg: "Rating removed successfully" });
     } catch (error) {
         console.error("Error:", error);
         return res.status(500).json({ msg: "Error: " + error });
