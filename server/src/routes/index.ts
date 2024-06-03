@@ -36,6 +36,9 @@ router.get("/likes/:postId", authenticateToken, likeController.getAllLikesByPost
 //routes from ratings
 router.post("/ratings", authenticateToken, ratingController.create);
 router.delete("/ratings/:postId", authenticateToken, ratingController.remove);
+router.get("/ratings/:postId", authenticateToken, ratingController.getAllRatingByPost);
+router.get("/ratings/average/:postId", authenticateToken, ratingController.average);
+router.put("/ratings", authenticateToken, ratingController.update);
 
 export default router;
 
