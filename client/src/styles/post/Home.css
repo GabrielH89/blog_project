@@ -33,15 +33,31 @@ body {
     margin-top: 20px;
 }
 
+.addPost-btn {
+    width: 200px;
+    height: 40px;
+    font-size: 1.2rem;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.addPost-btn:hover {
+    background-color: green;
+}
+
 .post {
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 20px;
+    background-color: #D3D3D3;
 }
 
 .post h2 {
     margin-top: 0;
+    border-bottom: 1px solid black;
+    margin-bottom: 30px;
 }
 
 .post-actions {

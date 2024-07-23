@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faThumbsUp, faComment, faStar } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
 import AddPostForm from './AddPostForm';
 import '../../styles/post/Home.css';
+import { useUserData } from '../../utils/useUserData';
 
 interface Post {
     post_id: number;
@@ -20,6 +20,7 @@ const Home: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [showComments, setShowComments] = useState<{ [key: number]: boolean }>({});
     const [showAddPostForm, setShowAddPostForm] = useState(false);
+    const {userName} = useUserData();    
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -66,8 +67,6 @@ const Home: React.FC = () => {
     };
 
     const handlePostAdded = () => {
-        // Re-fetch posts or update the posts state to include the new post
-        // This can be done by calling the fetchPosts function again or by other means
         const fetchPosts = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -105,18 +104,11 @@ const Home: React.FC = () => {
                 </div>
             </header>
             <div className="menu">
-                <h1>Bem-vindo(a)</h1>
+                <h1>Bem-vindo(a), {userName}</h1>
                 <div className="menu-buttons">
-                    <button className="add-button" onClick={handleAddPostClick}>Adicionar Post</button>
+                    <button className="addPost-btn" onClick={handleAddPostClick}>Adicionar Post</button>
                 </div>
-                <div className="menu-profile">
-                    <Link to="/user-info">
-                        <span className="menu-icon">
-                            <FontAwesomeIcon icon={faUser} />
-                        </span>
-                    </Link>
-                    <span className="menu-description">Seu perfil</span>
-                </div>
+               
             </div>
             <div className="body-posts">
                 {error ? (

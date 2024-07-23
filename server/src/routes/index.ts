@@ -12,6 +12,7 @@ const router = express.Router();
 router.post("/signup", userController.signUp);
 router.post("/signin", userController.signIn);
 router.delete("/users", authenticateToken, userController.deleteById);
+router.get("/users", authenticateToken, userController.getUser);
 
 //Routes from posts
 router.post("/posts", authenticateToken, postController.create);
