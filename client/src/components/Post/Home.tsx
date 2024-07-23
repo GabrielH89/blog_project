@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faThumbsUp, faComment, faStar } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import AddPostForm from './AddPostForm';
+import '../../styles/post/Home.css';
 
 interface Post {
-    id: number;
+    post_id: number;
     title: string;
     body: string;
     comments: string[];
@@ -13,22 +18,29 @@ interface Post {
 const Home: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [showComments, setShowComments] = useState<{ [key: number]: boolean }>({});
+    const [showAddPostForm, setShowAddPostForm] = useState(false);
 
     useEffect(() => {
         const fetchPosts = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:4200/posts', {
+                const response = await axios.get<Post[]>('http://localhost:4200/posts', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
 
-                if (response.data.msg && Array.isArray(response.data.msg)) {
-                    setPosts(response.data.msg);
-                } else {
-                    setError("Unexpected response format");
-                }
+                const formattedPosts: Post[] = response.data.map(item => ({
+                    post_id: item.post_id,
+                    title: item.title,
+                    body: item.body,
+                    comments: item.comments || [],
+                    likes: item.likes || 0,
+                    ratings: item.ratings || []
+                }));
+
+                setPosts(formattedPosts);
             } catch (error) {
                 setError("Error fetching posts");
                 console.error(error);
@@ -38,12 +50,110 @@ const Home: React.FC = () => {
         fetchPosts();
     }, []);
 
-  
+    const handleToggleComments = (postId: number) => {
+        setShowComments(prevState => ({
+            ...prevState,
+            [postId]: !prevState[postId]
+        }));
+    };
+
+    const handleAddPostClick = () => {
+        setShowAddPostForm(true);
+    };
+
+    const handleCloseAddPostForm = () => {
+        setShowAddPostForm(false);
+    };
+
+    const handlePostAdded = () => {
+        // Re-fetch posts or update the posts state to include the new post
+        // This can be done by calling the fetchPosts function again or by other means
+        const fetchPosts = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get<Post[]>('http://localhost:4200/posts', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const formattedPosts: Post[] = response.data.map(item => ({
+                    post_id: item.post_id,
+                    title: item.title,
+                    body: item.body,
+                    comments: item.comments || [],
+                    likes: item.likes || 0,
+                    ratings: item.ratings || []
+                }));
+
+                setPosts(formattedPosts);
+            } catch (error) {
+                setError("Error fetching posts");
+                console.error(error);
+            }
+        };
+
+        fetchPosts();
+    };
+
     return (
         <div className="home-container">
-            <h1>Page posts</h1>
+            <header className="header">
+                <h1 className="system-name">Blog System</h1>
+                <div className="user-icon">
+                    <FontAwesomeIcon icon={faUser} onClick={() => window.location.href = '/user-info'} />
+                </div>
+            </header>
+            <div className="menu">
+                <h1>Bem-vindo(a)</h1>
+                <div className="menu-buttons">
+                    <button className="add-button" onClick={handleAddPostClick}>Adicionar Post</button>
+                </div>
+                <div className="menu-profile">
+                    <Link to="/user-info">
+                        <span className="menu-icon">
+                            <FontAwesomeIcon icon={faUser} />
+                        </span>
+                    </Link>
+                    <span className="menu-description">Seu perfil</span>
+                </div>
+            </div>
+            <div className="body-posts">
+                {error ? (
+                    <p className="error-message">{error}</p>
+                ) : (
+                    posts.map(post => (
+                        <div key={post.post_id} className="post">
+                            <h2>{post.title}</h2>
+                            <p>{post.body}</p>
+                            <div className="post-actions">
+                                <button className="like-button">
+                                    <FontAwesomeIcon icon={faThumbsUp} /> {post.likes} Likes
+                                </button>
+                                <button className="comment-button" onClick={() => handleToggleComments(post.post_id)}>
+                                    <FontAwesomeIcon icon={faComment} /> Comments
+                                </button>
+                                <button className="rating-button">
+                                    <FontAwesomeIcon icon={faStar} /> {post.ratings.length > 0 ? 
+                                    (post.ratings.reduce((a, b) => a + b, 0) / post.ratings.length).toFixed(1) : 'No Ratings'}
+                                </button>
+                            </div>
+                            {showComments[post.post_id] && (
+                                <div className="comments-section">
+                                    {post.comments.map((comment, index) => (
+                                        <p key={index} className="comment">{comment}</p>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    ))
+                )}
+            </div>
+            {showAddPostForm && (
+                <AddPostForm onClose={handleCloseAddPostForm} onPostAdded={handlePostAdded} />
+            )}
         </div>
     );
-}
+};
 
 export default Home;

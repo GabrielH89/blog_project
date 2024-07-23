@@ -1,0 +1,103 @@
+/* Home.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+}
+
+.system-name {
+    margin: 0;
+}
+
+.user-icon {
+    cursor: pointer;
+}
+
+.body-posts {
+    margin-top: 20px;
+}
+
+.post {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.post h2 {
+    margin-top: 0;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.like-button,
+.comment-button,
+.rating-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.like-button:hover,
+.comment-button:hover,
+.rating-button:hover {
+    background-color: #45a049;
+}
+
+.comments-section {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.comment {
+    margin: 5px 0;
+}
+
+.error-message {
+    color: red;
+}
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .post-actions {
+        flex-direction: column;
+    }
+
+    .like-button,
+    .comment-button,
+    .rating-button {
+        margin-top: 5px;
+    }
+}

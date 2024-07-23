@@ -22,10 +22,13 @@ function SignIn() {
                     email: email,
                     password: password
                 });
-                navigate("/posts");
+
+                const { token, user_id } = response.data;
                 console.log(response.data);
-                const token = response.data.token;
                 localStorage.setItem('token', token);
+                localStorage.setItem('user_id', user_id);
+
+                navigate("/posts");
             }
         } catch (error) {
             if ((error as AxiosError).response && (error as AxiosError).response?.status === 400) {

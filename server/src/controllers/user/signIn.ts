@@ -17,7 +17,7 @@ export const signIn = async (req: Request, res: Response) => {
             expiresIn: '1h', // O token expira em 1 hora
         });
 
-        return res.status(200).json({ msg: "Login successful", token });
+        return res.status(200).json({ msg: "Login successful", token, user_id: user.user_id });
     } catch (error) {
         return res.status(500).json({ msg: "Error: " + error });
     }
