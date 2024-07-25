@@ -66,6 +66,22 @@ body {
     margin-top: 10px;
 }
 
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: top;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    width: 40px;
+    height: 30px;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+}
+
 .like-button,
 .comment-button,
 .rating-button {

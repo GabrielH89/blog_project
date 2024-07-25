@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faThumbsUp, faComment, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faThumbsUp, faComment, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import AddPostForm from './AddPostForm';
 import '../../styles/post/Home.css';
 import { useUserData } from '../../utils/useUserData';
@@ -20,7 +21,7 @@ const Home: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [showComments, setShowComments] = useState<{ [key: number]: boolean }>({});
     const [showAddPostForm, setShowAddPostForm] = useState(false);
-    const {userName} = useUserData();    
+    const { userName } = useUserData();
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -43,7 +44,6 @@ const Home: React.FC = () => {
 
                 setPosts(formattedPosts);
             } catch (error) {
-                setError("Error fetching posts");
                 console.error(error);
             }
         };
@@ -95,12 +95,26 @@ const Home: React.FC = () => {
         fetchPosts();
     };
 
+    const handleDeletePost = async (postId: number) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.delete(`http://localhost:4200/posts/${postId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setPosts(posts.filter(post => post.post_id !== postId));
+        } catch (error) {
+            console.error("Error deleting post", error);
+        }
+    };
+
     return (
         <div className="home-container">
             <header className="header">
                 <h1 className="system-name">Blog System</h1>
                 <div className="user-icon">
-                    <FontAwesomeIcon icon={faUser} onClick={() => window.location.href = '/user-info'} />
+                    <FontAwesomeIcon icon={faUser as IconProp} onClick={() => window.location.href = '/user-info'} />
                 </div>
             </header>
             <div className="menu">
@@ -108,7 +122,6 @@ const Home: React.FC = () => {
                 <div className="menu-buttons">
                     <button className="addPost-btn" onClick={handleAddPostClick}>Adicionar Post</button>
                 </div>
-               
             </div>
             <div className="body-posts">
                 {error ? (
@@ -116,18 +129,24 @@ const Home: React.FC = () => {
                 ) : (
                     posts.map(post => (
                         <div key={post.post_id} className="post">
-                            <h2>{post.title}</h2>
+                            <div className="post-header">
+                                <h2>{post.title}</h2>
+                                <button className="delete-button" onClick={() => 
+                                    handleDeletePost(post.post_id)}>
+                                    <FontAwesomeIcon icon={faTrash as IconProp} />
+                                </button>
+                            </div>
                             <p>{post.body}</p>
                             <div className="post-actions">
                                 <button className="like-button">
-                                    <FontAwesomeIcon icon={faThumbsUp} /> {post.likes} Likes
+                                    <FontAwesomeIcon icon={faThumbsUp as IconProp} /> {post.likes} Likes
                                 </button>
                                 <button className="comment-button" onClick={() => handleToggleComments(post.post_id)}>
-                                    <FontAwesomeIcon icon={faComment} /> Comments
+                                    <FontAwesomeIcon icon={faComment as IconProp} /> Comments
                                 </button>
                                 <button className="rating-button">
-                                    <FontAwesomeIcon icon={faStar} /> {post.ratings.length > 0 ? 
-                                    (post.ratings.reduce((a, b) => a + b, 0) / post.ratings.length).toFixed(1) : 'No Ratings'}
+                                    <FontAwesomeIcon icon={faStar as IconProp} /> {post.ratings.length > 0 ?
+                                        (post.ratings.reduce((a, b) => a + b, 0) / post.ratings.length).toFixed(1) : 'No Ratings'}
                                 </button>
                             </div>
                             {showComments[post.post_id] && (
