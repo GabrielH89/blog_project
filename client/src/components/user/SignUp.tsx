@@ -7,6 +7,25 @@ function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    /*Estados para os limites de campos dos inputs*/
+    const [nameCharsLimit, setNameCharsLimit] = useState(100);
+    const [emailCharsLimit, setEmailCharsLimit] = useState(200);
+    const [passwordCharsLimit, setPasswordCharsLimit] = useState(20);
+
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setName(e.target.value)
+        setNameCharsLimit(100 - e.target.value.length);
+    }
+
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+        setEmailCharsLimit(200 - e.target.value.length);
+    }
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+        setPasswordCharsLimit(20 - e.target.value.length);
+    }
 
     const handleSignUp = async (e: React.FormEvent) => {
         try{
@@ -15,6 +34,7 @@ function SignUp() {
             formData.append("name", name);
             formData.append("email", email);
             formData.append("password", password);
+    
             const regexEmail =  /^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,4}$/; 
             const regexPassword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
             if(!regexEmail.test(email)) {
@@ -45,19 +65,22 @@ function SignUp() {
             <form className="signUpForm">
             <h2>Cadastro</h2>
             <label>Nome</label>
-            <input type="text" value={name}
-            onChange={(e) => setName(e.target.value)} required/>
+            <input type="text" value={name} maxLength={100}
+            onChange={handleNameChange} required/>
+            <small>{nameCharsLimit} caracteres restantes</small>
 
             <label>Email</label>
-            <input type="email" value={email}
-            onChange={(e) => setEmail(e.target.value)} required/>
+            <input type="email" value={email} maxLength={200}
+            onChange={handleEmailChange} required/>
+            <small>{emailCharsLimit} caracteres restantes</small>
 
             <label>Senha</label>
-            <input type="password" value={password}
-            onChange={(e) => setPassword(e.target.value)} required/>
+            <input type="password" value={password} maxLength={20}
+            onChange={handlePasswordChange} required/>
+            <small>{passwordCharsLimit} caracteres restantes</small>
 
             <label>Confirmar senha</label>
-            <input type="password" value={confirmPassword}
+            <input type="password" value={confirmPassword} maxLength={20}
             onChange={(e) => setConfirmPassword(e.target.value)} required/>
 
             <button type="submit" onClick={handleSignUp}>Cadastrar</button>

@@ -12,6 +12,9 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ onClose, onPostAdded }) => {
     const [body, setBody] = useState('');
     const [userId, setUserId] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
+    /*Estados para o limite de campos dos inputs*/ 
+    const [titleCharsLeft, setTitleCharsLeft] = useState(100);
+    const [bodyCharsLeft, setBodyCharsLeft] = useState(6000);
 
     useEffect(() => {
         // Assumindo que o ID do usuário está armazenado no localStorage
@@ -20,6 +23,17 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ onClose, onPostAdded }) => {
             setUserId(Number(storedUserId));
         }
     }, []);
+
+
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value);
+        setTitleCharsLeft(100 - e.target.value.length);
+    }
+
+    const handleBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setBody(e.target.value);
+        setBodyCharsLeft(6000 - e.target.value.length);
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -57,18 +71,22 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ onClose, onPostAdded }) => {
                             type="text"
                             id="title"
                             value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            onChange={handleTitleChange}
+                            maxLength={100}
                             required
                         />
                     </div>
+                    <small>{titleCharsLeft} caracteres restantes</small>
                     <div className="form-group">
                         <label htmlFor="body">Body:</label>
                         <textarea
                             id="body"
                             value={body}
-                            onChange={(e) => setBody(e.target.value)}
+                            onChange={handleBodyChange}
+                            maxLength={6000}
                             required
                         ></textarea>
+                        <small>{bodyCharsLeft} carcteres restantes</small>
                     </div>
                     <div className="form-actions">
                         <button type="submit">Add Post</button>
