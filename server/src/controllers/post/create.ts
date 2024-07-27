@@ -16,12 +16,12 @@ export const create = async (req: CustomRequest, res: Response) => {
             return res.status(400).json({msg: "Please, fill all required inputs"});
         }
 
-        if(title.length > 55) {
+        if(title.length > 100) {
             return res.status(400).json({msg: "Title input has more than 55 caracters"});
         }
 
         if(body.length > 6000) {
-            return res.status(400).json({msg: "Body input has more than 400 caracters"});
+            return res.status(400).json({msg: "Body input has more than 6000 caracters"});
         }
 
         const newPost = await Post.create({
