@@ -1,85 +1,78 @@
 .signUpForm {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f2f2f2;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.signUpForm h2 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.signUpForm label {
-  display: block;
-  margin-bottom: 8px;
-  color: #666;
-  font-size: 1.3rem;
-}
-
-.signUpForm input[type="text"],
-.signUpForm input[type="email"],
-.signUpForm input[type="password"] {
-  width: calc(100% - 2px); /* Ajustar o width considerando a borda */
-  padding: 10px;
-  margin-bottom: 4px; /* Reduzir a margem inferior */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.signUpForm small {
-  display: block;
-  color: #888;
-  font-size: 0.9rem;
-  margin-bottom: 12px; /* Ajustar a margem inferior para espaçamento adequado */
-}
-
-.signUpForm button {
-  width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-  margin-top: 40px;
-}
-
-.signUpForm button:hover {
-  background-color: #00FF00;
-  transition: 0.3s;
-}
-
-.signUpForm p {
-  text-align: center;
-  margin-top: 16px;
-  font-size: 14px;
-}
-
-.signUpForm p a {
-  color: #4CAF50;
-  text-decoration: none;
-}
-
-.signUpForm p a:hover {
-  text-decoration: underline;
-}
-
-/* Responsividade */
-@media (max-width: 600px) {
-  .signUpForm {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signUpForm h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .signUpForm label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+    font-size: 1.3rem;
+  }
+  
+  .signUpForm input[type="text"],
+  .signUpForm input[type="email"],
+  .signUpForm input[type="password"] {
+    width: calc(100% - 4px); /* Considerando padding de 10px em cada lado */
     padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
   }
-}
-
-@media (max-width: 400px) {
-  .signUpForm {
+  
+  .signUpForm button {
     width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
   }
-}
+  
+  .signUpForm button:hover {
+      background-color: #00FF00;
+      transition: 0.3s;
+  }
+  
+  .signUpForm p {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+  }
+  
+  .signUpForm p a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  
+  .signUpForm p a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 600px) {
+    .signUpForm {
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .signUpForm {
+      width: 100%;
+    }
+  }
+  

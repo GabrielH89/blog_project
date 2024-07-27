@@ -1,11 +1,9 @@
-// src/components/Home.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faComment, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faThumbsUp, faComment, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import AddPostForm from './AddPostForm';
-import LikeButton from '../Like/LikeButton';
 import '../../styles/post/Home.css';
 import { useUserData } from '../../utils/useUserData';
 
@@ -30,7 +28,9 @@ const Home: React.FC = () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.get<Post[]>('http://localhost:4200/posts', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
 
                 const formattedPosts: Post[] = response.data.map(item => ({
@@ -71,7 +71,9 @@ const Home: React.FC = () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.get<Post[]>('http://localhost:4200/posts', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
 
                 const formattedPosts: Post[] = response.data.map(item => ({
@@ -97,7 +99,9 @@ const Home: React.FC = () => {
         try {
             const token = localStorage.getItem('token');
             await axios.delete(`http://localhost:4200/posts/${postId}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             });
             setPosts(posts.filter(post => post.post_id !== postId));
         } catch (error) {
@@ -127,13 +131,16 @@ const Home: React.FC = () => {
                         <div key={post.post_id} className="post">
                             <div className="post-header">
                                 <h2>{post.title}</h2>
-                                <button className="delete-button" onClick={() => handleDeletePost(post.post_id)}>
+                                <button className="delete-button" onClick={() => 
+                                    handleDeletePost(post.post_id)}>
                                     <FontAwesomeIcon icon={faTrash as IconProp} />
                                 </button>
                             </div>
                             <p>{post.body}</p>
                             <div className="post-actions">
-                                <LikeButton postId={post.post_id} initialLikes={post.likes} />
+                                <button className="like-button">
+                                    <FontAwesomeIcon icon={faThumbsUp as IconProp} /> {post.likes} Likes
+                                </button>
                                 <button className="comment-button" onClick={() => handleToggleComments(post.post_id)}>
                                     <FontAwesomeIcon icon={faComment as IconProp} /> Comments
                                 </button>
