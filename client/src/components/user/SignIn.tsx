@@ -34,7 +34,7 @@ function SignIn() {
             if ((error as AxiosError).response && (error as AxiosError).response?.status === 400) {
                 setErrorMessage("Email ou senha inválidos");
                 setTimeout(() => {
-                    setErrorMessage(""); // Clear the error message after 5 seconds
+                    setErrorMessage(""); 
                 }, 5000);
             } else {
                 console.log("Error: " + error);

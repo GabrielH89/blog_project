@@ -7,13 +7,14 @@ function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    /*Estados para os limites de campos dos inputs*/
     const [nameCharsLimit, setNameCharsLimit] = useState(100);
     const [emailCharsLimit, setEmailCharsLimit] = useState(200);
     const [passwordCharsLimit, setPasswordCharsLimit] = useState(20);
+    const [formVisible, setFormVisible] = useState(true); // Estado para controlar a visibilidade do formulário
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value)
+        setName(e.target.value);
         setNameCharsLimit(100 - e.target.value.length);
     }
 
@@ -28,65 +29,83 @@ function SignUp() {
     }
 
     const handleSignUp = async (e: React.FormEvent) => {
-        try{
-            e.preventDefault();
+        e.preventDefault();
+        setErrorMessage(""); // Reset the error message before attempting signup
+
+        try {
             const formData = new FormData();
             formData.append("name", name);
             formData.append("email", email);
             formData.append("password", password);
     
-            const regexEmail =  /^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,4}$/; 
+            const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,4}$/; 
             const regexPassword = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
-            if(!regexEmail.test(email)) {
-                alert("Insira um email válido");
-            }else if(!regexPassword.test(password)) {
-                alert("Inisira uma senha válida");
-            }else if(password !== confirmPassword) {
-                alert("O campo senha e o confirmação de senha não correspondem");
-            }else{
+            
+            if (!regexEmail.test(email)) {
+                setErrorMessage("Insira um email válido");
+            } else if (!regexPassword.test(password)) {
+                setErrorMessage("Insira uma senha válida");
+            } else if (password !== confirmPassword) {
+                setErrorMessage("O campo senha e a confirmação de senha não correspondem");
+            } else {
                 await axios.post("http://localhost:4200/signup", formData, {
                     headers: {
                         "Content-Type": "application/json",
                     }
                 });
-                alert("Dados cadastrados com sucesso");
+                setFormVisible(false); // Esconde o formulário após o cadastro bem-sucedido
             }
-        }catch(error) {
-            if((error as AxiosError).response && (error as AxiosError).response?.status === 400) {
-                alert("Usuário já existente, tente se cadastrar com outro");
-            }else{
+        } catch (error) {
+            if ((error as AxiosError).response && (error as AxiosError).response?.status === 400) {
+                setErrorMessage("Usuário já existente, tente se cadastrar com outro");
+                if (errorMessage) {
+                    setTimeout(() => {
+                        setErrorMessage("");
+                    }, 5000);
+                }
+            } else {
                 console.log("Error: " + error);
             }
         }
+
     }
 
     return (
         <div>
-            <form className="signUpForm">
-            <h2>Cadastro</h2>
-            <label>Nome</label>
-            <input type="text" value={name} maxLength={100}
-            onChange={handleNameChange} required/>
-            <small>{nameCharsLimit} caracteres restantes</small>
+            {formVisible ? (
+                <form className="signUpForm" onSubmit={handleSignUp}>
+                    {errorMessage && 
+                        <div className="error-message" 
+                        style={{ backgroundColor: '#B22222', color: 'white', padding: '10px', marginBottom: '10px', 
+                        borderRadius: '5px', textAlign: 'center', fontSize: '1.1rem' }}>
+                    {errorMessage}</div>}
+                    <h2>Cadastro</h2>
+                    <label>Nome</label>
+                    <input type="text" value={name} maxLength={100}
+                    onChange={handleNameChange} required />
+                    <small>{nameCharsLimit} caracteres restantes</small>
 
-            <label>Email</label>
-            <input type="email" value={email} maxLength={200}
-            onChange={handleEmailChange} required/>
-            <small>{emailCharsLimit} caracteres restantes</small>
+                    <label>Email</label>
+                    <input type="email" value={email} maxLength={200}
+                    onChange={handleEmailChange} required />
+                    <small>{emailCharsLimit} caracteres restantes</small>
 
-            <label>Senha</label>
-            <input type="password" value={password} maxLength={20}
-            onChange={handlePasswordChange} required/>
-            <small>{passwordCharsLimit} caracteres restantes</small>
+                    <label>Senha</label>
+                    <input type="password" value={password} maxLength={20}
+                    onChange={handlePasswordChange} required />
+                    <small>{passwordCharsLimit} caracteres restantes</small>
 
-            <label>Confirmar senha</label>
-            <input type="password" value={confirmPassword} maxLength={20}
-            onChange={(e) => setConfirmPassword(e.target.value)} required/>
+                    <label>Confirmar senha</label>
+                    <input type="password" value={confirmPassword} maxLength={20}
+                    onChange={(e) => setConfirmPassword(e.target.value)} required />
 
-            <button type="submit" onClick={handleSignUp}>Cadastrar</button>
-            </form>
+                    <button type="submit">Cadastrar</button>
+                </form>
+            ) : (
+                <p>Cadastro realizado com sucesso!</p>
+            )}
         </div>
-    )
+    );
 }
 
-export default SignUp
+export default SignUp;
