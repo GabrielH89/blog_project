@@ -25,8 +25,8 @@ function SignIn() {
 
                 const { token, user_id } = response.data;
                 console.log(response.data);
-                localStorage.setItem('token', token);
-                localStorage.setItem('user_id', user_id);
+                sessionStorage.setItem('token', token);
+                sessionStorage.setItem('user_id', user_id);
 
                 navigate("/posts");
             }

@@ -13,8 +13,8 @@ function User_info() {
   const [isAccountDeleted, setIsAccountDeleted] = useState(false); 
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user_id');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user_id');
     navigate("/");
   }
 
@@ -22,7 +22,7 @@ function User_info() {
     const confirmDelete = window.confirm("Deseja realmente excluir sua conta?")
     if(confirmDelete) {
       try{
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         await axios.delete("http://localhost:4200/users", {
           headers: {
             Authorization: `Bearer ${token}`
@@ -38,7 +38,7 @@ function User_info() {
   useEffect(() => {
     if (isAccountDeleted) {
         alert("Sua conta foi deletada com sucesso");
-        localStorage.removeItem('token'); // Remover o token após a exclusão da conta
+        sessionStorage.removeItem('token'); // Remover o token após a exclusão da conta
         navigate("/"); // Redirecionar para a rota raiz após a exclusão da conta
     }
 }, [isAccountDeleted, navigate]);

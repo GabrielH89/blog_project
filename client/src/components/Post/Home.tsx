@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faComment, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faComment, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import AddPostForm from './AddPostForm';
 import LikeButton from '../Like/LikeButton';
+import RatingButton from '../rating/RatingButton';
 import '../../styles/post/Home.css';
 import { useUserData } from '../../utils/useUserData';
 
@@ -28,7 +29,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const response = await axios.get<Post[]>('http://localhost:4200/posts', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -69,7 +70,7 @@ const Home: React.FC = () => {
     const handlePostAdded = () => {
         const fetchPosts = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const response = await axios.get<Post[]>('http://localhost:4200/posts', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -95,7 +96,7 @@ const Home: React.FC = () => {
 
     const handleDeletePost = async (postId: number) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axios.delete(`http://localhost:4200/posts/${postId}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -137,10 +138,7 @@ const Home: React.FC = () => {
                                 <button className="comment-button" onClick={() => handleToggleComments(post.post_id)}>
                                     <FontAwesomeIcon icon={faComment as IconProp} /> Comments
                                 </button>
-                                <button className="rating-button">
-                                    <FontAwesomeIcon icon={faStar as IconProp} /> {post.ratings.length > 0 ?
-                                        (post.ratings.reduce((a, b) => a + b, 0) / post.ratings.length).toFixed(1) : 'No Ratings'}
-                                </button>
+                                <RatingButton postId={post.post_id} initialRatings={post.ratings} />
                             </div>
                             {showComments[post.post_id] && (
                                 <div className="comments-section">

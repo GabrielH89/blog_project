@@ -17,8 +17,8 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ onClose, onPostAdded }) => {
     const [bodyCharsLeft, setBodyCharsLeft] = useState(6000);
 
     useEffect(() => {
-        // Assumindo que o ID do usuário está armazenado no localStorage
-        const storedUserId = localStorage.getItem('user_id');
+        // Assumindo que o ID do usuário está armazenado no sessionStorage
+        const storedUserId = sessionStorage.getItem('user_id');
         if (storedUserId) {
             setUserId(Number(storedUserId));
         }
@@ -44,7 +44,7 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ onClose, onPostAdded }) => {
         }
 
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             await axios.post('http://localhost:4200/posts', { title, body, user_id: userId }, {
                 headers: {
                     'Authorization': `Bearer ${token}`

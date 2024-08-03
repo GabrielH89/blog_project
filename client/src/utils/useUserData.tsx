@@ -13,7 +13,7 @@ export const useUserData = () => {
     useEffect(() => {
         const fetchData = async () => {
             try{    
-                const token = await localStorage.getItem('token');
+                const token = await sessionStorage.getItem('token');
                 const response = await axios.get<UserData>("http://localhost:4200/users", {
                     headers: {
                         'Authorization': `Bearer ${token}`

@@ -17,7 +17,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ postId, initialLikes }) => {
     useEffect(() => {
         const fetchLikes = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = sessionStorage.getItem('token');
                 const response = await axios.get<LikeResponse>(`http://localhost:4200/likes/${postId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -33,7 +33,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ postId, initialLikes }) => {
 
     const handleLike = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             if (hasLiked) {
                 await axios.delete(`http://localhost:4200/likes/${postId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
