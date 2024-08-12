@@ -138,7 +138,7 @@ const Home: React.FC = () => {
                                 <button className="comment-button" onClick={() => handleToggleComments(post.post_id)}>
                                     <FontAwesomeIcon icon={faComment as IconProp} /> Comments
                                 </button>
-                                <RatingButton postId={post.post_id} initialRatings={post.ratings} />
+                                <RatingButton postId={post.post_id} initialRatings={post.ratings} userRating={null}/>
                             </div>
                             {showComments[post.post_id] && (
                                 <div className="comments-section">
