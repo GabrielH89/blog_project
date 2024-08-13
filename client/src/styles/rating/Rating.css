@@ -1,17 +1,72 @@
-/* src/styles/post/RatingButton.css */
-.rating-popup {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
+.rating-button {
+    background-color: #ffcc00;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    transition: background-color 0.3s;
+    color: #fff;
 }
 
-.rating-button {
-    background: none;
+.rating-button:hover {
+    background-color: #e6b800;
+}
+
+.rating-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 200px;
+    z-index: 1000;
+    text-align: center;
+}
+
+.rating-popup button {
+    background-color: #ffcc00;
     border: none;
-    color: #007bff;
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    border-radius: 5px;
+    color: black;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.rating-popup button:hover {
+    background-color: #e6b800;
+}
+
+.rating-popup button:last-child {
+    background-color: #ccc;
+    color: #333;
+}
+
+.rating-popup button:last-child:hover {
+    background-color: #b3b3b3;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 480px) {
+    .rating-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .rating-popup button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
 }
