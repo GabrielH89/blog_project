@@ -1,0 +1,102 @@
+.comment-form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.comment-form-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px; 
+    box-sizing: border-box;
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: red;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: none;
+    box-sizing: border-box;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .comment-form-container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    textarea {
+        height: 80px;
+    }
+
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+/* Responsividade para telas muito pequenas (ex. smartphones) */
+@media (max-width: 480px) {
+    .comment-form-container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    textarea {
+        height: 60px;
+    }
+
+    button[type="submit"] {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}

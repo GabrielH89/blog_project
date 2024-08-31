@@ -1,4 +1,3 @@
-// src/components/Home.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +6,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import AddPostForm from './AddPostForm';
 import LikeButton from '../Like/LikeButton';
 import RatingButton from '../rating/RatingButton';
+import CommentForm from '../comment/CommmentForm'; // Corrigi o caminho aqui
 import '../../styles/post/Home.css';
 import { useUserData } from '../../utils/useUserData';
 
@@ -106,6 +106,10 @@ const Home: React.FC = () => {
         }
     };
 
+    const handleCommentAdded = () => {
+        handlePostAdded(); // Refresh the posts to display the new comment
+    };
+
     return (
         <div className="home-container">
             <header className="header">
@@ -135,17 +139,20 @@ const Home: React.FC = () => {
                             <p>{post.body}</p>
                             <div className="post-actions">
                                 <LikeButton postId={post.post_id} initialLikes={post.likes} />
-                                <button className="comment-button" onClick={() => handleToggleComments(post.post_id)}>
-                                    <FontAwesomeIcon icon={faComment as IconProp} /> Comments
+                                <button 
+                                    className="comment-button" 
+                                    onClick={() => handleToggleComments(post.post_id)} // Usar handleToggleComments
+                                >
+                                    <FontAwesomeIcon icon={faComment as IconProp} /> Comentários
                                 </button>
-                                <RatingButton postId={post.post_id} initialRatings={post.ratings} userRating={null}/>
+                                <RatingButton postId={post.post_id} initialRatings={post.ratings} userRating={null} />
                             </div>
                             {showComments[post.post_id] && (
-                                <div className="comments-section">
-                                    {post.comments.map((comment, index) => (
-                                        <p key={index} className="comment">{comment}</p>
-                                    ))}
-                                </div>
+                                <CommentForm
+                                    postId={post.post_id}
+                                    onClose={() => handleToggleComments(post.post_id)} // Alterna os comentários ao fechar
+                                    onCommentAdded={handleCommentAdded}
+                                />
                             )}
                         </div>
                     ))
