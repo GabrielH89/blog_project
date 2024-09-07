@@ -6,10 +6,10 @@ import { CustomRequest } from '../../middleware/authAuthentication';
 // Função para buscar todos os comentários de um post com informações do usuário
 export const getAllByPostId = async (req: Request, res: Response) => {
     try {
-        const postId = req.params.id_post; 
+        const { id_post } = req.params;
 
         const comments = await Comment.findAll({
-            where: { post_id: postId },
+            where: { post_id: id_post },
             include: [{ model: User, attributes: ['name'] }]
         });
 

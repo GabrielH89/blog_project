@@ -27,7 +27,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ postId, initialLikes }) => {
                 console.error('Error fetching likes', error);
             }
         };
-
+        
         fetchLikes();
     }, [postId]);
 

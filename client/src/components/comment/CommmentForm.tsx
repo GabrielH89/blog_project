@@ -22,7 +22,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ postId, onClose, onCommentAdd
 
         try {
             const token = sessionStorage.getItem('token');
-            await axios.post('/comments', {
+            await axios.post('http://localhost:4200/comments', {
                 commentCol: comment,
                 post_id: postId
             }, {

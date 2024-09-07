@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faComment, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faComment, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import AddPostForm from './AddPostForm';
 import LikeButton from '../Like/LikeButton';
 import RatingButton from '../rating/RatingButton';
-import CommentForm from '../comment/CommmentForm'; // Corrigi o caminho aqui
+import CommentSection from '../comment/CommentSection';
+import CommentForm from '../comment/CommmentForm'; // Importe o CommentForm
 import '../../styles/post/Home.css';
 import { useUserData } from '../../utils/useUserData';
 
@@ -24,6 +25,7 @@ const Home: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [showComments, setShowComments] = useState<{ [key: number]: boolean }>({});
     const [showAddPostForm, setShowAddPostForm] = useState(false);
+    const [showCommentForm, setShowCommentForm] = useState<{ [key: number]: boolean }>({});
     const { userName } = useUserData();
 
     useEffect(() => {
@@ -52,10 +54,10 @@ const Home: React.FC = () => {
         fetchPosts();
     }, []);
 
-    const handleToggleComments = (postId: number) => {
+    const handleToggleComments = (id_post: number) => {
         setShowComments(prevState => ({
             ...prevState,
-            [postId]: !prevState[postId]
+            [id_post]: !prevState[id_post]
         }));
     };
 
@@ -106,8 +108,11 @@ const Home: React.FC = () => {
         }
     };
 
-    const handleCommentAdded = () => {
-        handlePostAdded(); // Refresh the posts to display the new comment
+    const handleToggleCommentForm = (postId: number) => {
+        setShowCommentForm(prevState => ({
+            ...prevState,
+            [postId]: !prevState[postId]
+        }));
     };
 
     return (
@@ -145,13 +150,31 @@ const Home: React.FC = () => {
                                 >
                                     <FontAwesomeIcon icon={faComment as IconProp} /> Comentários
                                 </button>
+                                
+
+
+
                                 <RatingButton postId={post.post_id} initialRatings={post.ratings} userRating={null} />
                             </div>
+                            <button 
+                                    className="add-comment-button" 
+                                    onClick={() => handleToggleCommentForm(post.post_id)} // Usar handleToggleCommentForm
+                                >
+                                    <FontAwesomeIcon icon={faPlus as IconProp} /> Adicionar Comentário
+                                </button>
                             {showComments[post.post_id] && (
-                                <CommentForm
-                                    postId={post.post_id}
-                                    onClose={() => handleToggleComments(post.post_id)} // Alterna os comentários ao fechar
-                                    onCommentAdded={handleCommentAdded}
+                                <div className="comments-section">
+                                    <CommentSection 
+                                        id_post={post.post_id} 
+                                        initialComments={[]}  // Passa os comentários como props
+                                    />
+                                </div>
+                            )}
+                            {showCommentForm[post.post_id] && (
+                                <CommentForm 
+                                    postId={post.post_id} 
+                                    onClose={() => handleToggleCommentForm(post.post_id)} 
+                                    onCommentAdded={handlePostAdded}
                                 />
                             )}
                         </div>
