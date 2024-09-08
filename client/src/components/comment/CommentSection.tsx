@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import '../../styles/comment/CommentSection.css';
 
 interface Comment {
     id: number;
@@ -32,7 +33,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({id_post, initialComments
     }, [id_post]);
 
     return (
-        <div>
+        <div className='comments-section'>
             <form>
                 <ul>
                 {comments.map((comment, index) => (

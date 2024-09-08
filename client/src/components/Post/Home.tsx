@@ -151,9 +151,6 @@ const Home: React.FC = () => {
                                     <FontAwesomeIcon icon={faComment as IconProp} /> Comentários
                                 </button>
                                 
-
-
-
                                 <RatingButton postId={post.post_id} initialRatings={post.ratings} userRating={null} />
                             </div>
                             <button 
@@ -168,6 +165,8 @@ const Home: React.FC = () => {
                                         id_post={post.post_id} 
                                         initialComments={[]}  // Passa os comentários como props
                                     />
+
+                                    
                                 </div>
                             )}
                             {showCommentForm[post.post_id] && (

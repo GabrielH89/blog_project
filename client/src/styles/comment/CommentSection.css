@@ -1,0 +1,22 @@
+.comments-section  {
+    
+}
+
+.comments-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comments-section li {
+    border: 1px solid black;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.comments-section p {
+    font-size: 1.2rem;
+}
+
+.comments-section small {
+    font-weight: bold;
+}
