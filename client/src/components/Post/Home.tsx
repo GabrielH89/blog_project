@@ -7,7 +7,7 @@ import AddPostForm from './AddPostForm';
 import LikeButton from '../Like/LikeButton';
 import RatingButton from '../rating/RatingButton';
 import CommentSection from '../comment/CommentSection';
-import CommentForm from '../comment/CommmentForm'; // Corrigido para CommentForm
+import CommentForm from '../comment/CommmentForm';
 import '../../styles/post/Home.css';
 import { useUserData } from '../../utils/useUserData';
 
@@ -18,17 +18,21 @@ interface Post {
     comments: string[];
     likes: number;
     ratings: number[];
-    user_id: number;  // Alterado de 'owner' para 'user_id'
+    user_id: number;
 }
+
+const POSTS_PER_PAGE = 4;
 
 const Home: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
     const [error, setError] = useState<string | null>(null);
     const [showComments, setShowComments] = useState<{ [key: number]: boolean }>({});
     const [showAddPostForm, setShowAddPostForm] = useState(false);
     const [showCommentForm, setShowCommentForm] = useState<{ [key: number]: boolean }>({});
     const [userId, setUserId] = useState<number | null>(null);
-    const {userName} = useUserData();
+    const { userName } = useUserData();
 
     useEffect(() => {
         // Recuperar user_id da sessão
@@ -55,6 +59,7 @@ const Home: React.FC = () => {
                 }));
 
                 setPosts(formattedPosts);
+                setTotalPages(Math.ceil(formattedPosts.length / POSTS_PER_PAGE));
             } catch (error) {
                 console.error(error);
             }
@@ -97,6 +102,7 @@ const Home: React.FC = () => {
                 }));
 
                 setPosts(formattedPosts);
+                setTotalPages(Math.ceil(formattedPosts.length / POSTS_PER_PAGE));
             } catch (error) {
                 setError("Error fetching posts");
                 console.error(error);
@@ -125,6 +131,12 @@ const Home: React.FC = () => {
         }));
     };
 
+    const handlePageChange = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const currentPosts = posts.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE);
+
     return (
         <div className="home-container">
             <header className="header">
@@ -143,14 +155,14 @@ const Home: React.FC = () => {
                 {error ? (
                     <p className="error-message">{error}</p>
                 ) : (
-                    posts.map(post => (
+                    currentPosts.map(post => (
                         <div key={post.post_id} className="post">
                             <div className="post-header">
                                 <h2>{post.title}</h2>
                                 <button 
                                     className="delete-button" 
                                     onClick={() => handleDeletePost(post.post_id)}
-                                    disabled={post.user_id !== userId}  // Ajustado para usar user_id
+                                    disabled={post.user_id !== userId}
                                 >
                                     <FontAwesomeIcon icon={faTrash as IconProp} />
                                 </button>
@@ -168,19 +180,17 @@ const Home: React.FC = () => {
                                 <RatingButton postId={post.post_id} initialRatings={post.ratings} userRating={null} />
                             </div>
                             <button 
-                                    className="add-comment-button" 
-                                    onClick={() => handleToggleCommentForm(post.post_id)}
-                                >
-                                    <FontAwesomeIcon icon={faPlus as IconProp} /> Adicionar Comentário
-                                </button>
+                                className="add-comment-button" 
+                                onClick={() => handleToggleCommentForm(post.post_id)}
+                            >
+                                <FontAwesomeIcon icon={faPlus as IconProp} /> Adicionar Comentário
+                            </button>
                             {showComments[post.post_id] && (
                                 <div className="comments-section">
                                     <CommentSection 
                                         id_post={post.post_id} 
-                                        initialComments={[]}  // Passa os comentários como props
+                                        initialComments={[]} 
                                     />
-                                
-                                
                                 </div>
                             )}
                             {showCommentForm[post.post_id] && (
@@ -193,6 +203,17 @@ const Home: React.FC = () => {
                         </div>
                     ))
                 )}
+            </div>
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                        key={index}
+                        className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                        onClick={() => handlePageChange(index + 1)}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
             </div>
             {showAddPostForm && (
                 <AddPostForm onClose={handleCloseAddPostForm} onPostAdded={handlePostAdded} />
