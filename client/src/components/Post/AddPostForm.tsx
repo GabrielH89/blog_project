@@ -12,18 +12,15 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ onClose, onPostAdded }) => {
     const [body, setBody] = useState('');
     const [userId, setUserId] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
-    /*Estados para o limite de campos dos inputs*/ 
     const [titleCharsLeft, setTitleCharsLeft] = useState(100);
     const [bodyCharsLeft, setBodyCharsLeft] = useState(6000);
 
     useEffect(() => {
-        // Assumindo que o ID do usuário está armazenado no sessionStorage
         const storedUserId = sessionStorage.getItem('user_id');
         if (storedUserId) {
             setUserId(Number(storedUserId));
         }
     }, []);
-
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -62,6 +59,7 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ onClose, onPostAdded }) => {
     return (
         <div className="add-post-form-overlay">
             <div className="add-post-form-container">
+                <button className="cancel-button" onClick={onClose}>&times;</button> {/* Botão de cancelar com "X" */}
                 <h2>Adicionar Post</h2>
                 <form onSubmit={handleSubmit}>
                     {error && <p className="error-message">{error}</p>}
@@ -86,11 +84,10 @@ const AddPostForm: React.FC<AddPostFormProps> = ({ onClose, onPostAdded }) => {
                             maxLength={6000}
                             required
                         ></textarea>
-                        <small>{bodyCharsLeft} carcteres restantes</small>
+                        <small>{bodyCharsLeft} caracteres restantes</small>
                     </div>
                     <div className="form-actions">
                         <button type="submit">Add Post</button>
-                        <button type="button" onClick={onClose}>Cancel</button>
                     </div>
                 </form>
             </div>

@@ -7,7 +7,7 @@ import AddPostForm from './AddPostForm';
 import LikeButton from '../Like/LikeButton';
 import RatingButton from '../rating/RatingButton';
 import CommentSection from '../comment/CommentSection';
-import CommentForm from '../comment/CommmentForm'; // Importe o CommentForm
+import CommentForm from '../comment/CommmentForm'; // Corrigido para CommentForm
 import '../../styles/post/Home.css';
 import { useUserData } from '../../utils/useUserData';
 
@@ -18,6 +18,7 @@ interface Post {
     comments: string[];
     likes: number;
     ratings: number[];
+    user_id: number;  // Alterado de 'owner' para 'user_id'
 }
 
 const Home: React.FC = () => {
@@ -26,9 +27,16 @@ const Home: React.FC = () => {
     const [showComments, setShowComments] = useState<{ [key: number]: boolean }>({});
     const [showAddPostForm, setShowAddPostForm] = useState(false);
     const [showCommentForm, setShowCommentForm] = useState<{ [key: number]: boolean }>({});
-    const { userName } = useUserData();
+    const [userId, setUserId] = useState<number | null>(null);
+    const {userName} = useUserData();
 
     useEffect(() => {
+        // Recuperar user_id da sessão
+        const storedUserId = sessionStorage.getItem('user_id');
+        if (storedUserId) {
+            setUserId(Number(storedUserId));
+        }
+
         const fetchPosts = async () => {
             try {
                 const token = sessionStorage.getItem('token');
@@ -42,7 +50,8 @@ const Home: React.FC = () => {
                     body: item.body,
                     comments: item.comments || [],
                     likes: item.likes || 0,
-                    ratings: item.ratings || []
+                    ratings: item.ratings || [],
+                    user_id: item.user_id,
                 }));
 
                 setPosts(formattedPosts);
@@ -83,7 +92,8 @@ const Home: React.FC = () => {
                     body: item.body,
                     comments: item.comments || [],
                     likes: item.likes || 0,
-                    ratings: item.ratings || []
+                    ratings: item.ratings || [],
+                    user_id: item.user_id,
                 }));
 
                 setPosts(formattedPosts);
@@ -137,7 +147,11 @@ const Home: React.FC = () => {
                         <div key={post.post_id} className="post">
                             <div className="post-header">
                                 <h2>{post.title}</h2>
-                                <button className="delete-button" onClick={() => handleDeletePost(post.post_id)}>
+                                <button 
+                                    className="delete-button" 
+                                    onClick={() => handleDeletePost(post.post_id)}
+                                    disabled={post.user_id !== userId}  // Ajustado para usar user_id
+                                >
                                     <FontAwesomeIcon icon={faTrash as IconProp} />
                                 </button>
                             </div>
@@ -146,7 +160,7 @@ const Home: React.FC = () => {
                                 <LikeButton postId={post.post_id} initialLikes={post.likes} />
                                 <button 
                                     className="comment-button" 
-                                    onClick={() => handleToggleComments(post.post_id)} // Usar handleToggleComments
+                                    onClick={() => handleToggleComments(post.post_id)}
                                 >
                                     <FontAwesomeIcon icon={faComment as IconProp} /> Comentários
                                 </button>
@@ -155,7 +169,7 @@ const Home: React.FC = () => {
                             </div>
                             <button 
                                     className="add-comment-button" 
-                                    onClick={() => handleToggleCommentForm(post.post_id)} // Usar handleToggleCommentForm
+                                    onClick={() => handleToggleCommentForm(post.post_id)}
                                 >
                                     <FontAwesomeIcon icon={faPlus as IconProp} /> Adicionar Comentário
                                 </button>
@@ -165,8 +179,8 @@ const Home: React.FC = () => {
                                         id_post={post.post_id} 
                                         initialComments={[]}  // Passa os comentários como props
                                     />
-
-                                    
+                                
+                                
                                 </div>
                             )}
                             {showCommentForm[post.post_id] && (

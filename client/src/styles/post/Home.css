@@ -82,6 +82,10 @@ body {
     border-radius: 3px;
 }
 
+.delete-button:disabled {
+    background-color: #ddd;
+}
+
 .like-button,
 .comment-button,
 .rating-button {
