@@ -32,10 +32,10 @@ const Home: React.FC = () => {
     const [showAddPostForm, setShowAddPostForm] = useState(false);
     const [showCommentForm, setShowCommentForm] = useState<{ [key: number]: boolean }>({});
     const [userId, setUserId] = useState<number | null>(null);
+    const [postToDelete, setPostToDelete] = useState<number | null>(null); // Estado para o pop-up
     const { userName } = useUserData();
 
     useEffect(() => {
-        // Recuperar user_id da sessão
         const storedUserId = sessionStorage.getItem('user_id');
         if (storedUserId) {
             setUserId(Number(storedUserId));
@@ -119,9 +119,18 @@ const Home: React.FC = () => {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             setPosts(posts.filter(post => post.post_id !== postId));
+            setPostToDelete(null); // Fechar pop-up
         } catch (error) {
             console.error("Error deleting post", error);
         }
+    };
+
+    const handleOpenDeleteConfirmation = (postId: number) => {
+        setPostToDelete(postId); // Abrir o pop-up
+    };
+
+    const handleCancelDelete = () => {
+        setPostToDelete(null); // Fechar o pop-up
     };
 
     const handleToggleCommentForm = (postId: number) => {
@@ -161,7 +170,7 @@ const Home: React.FC = () => {
                                 <h2>{post.title}</h2>
                                 <button 
                                     className="delete-button" 
-                                    onClick={() => handleDeletePost(post.post_id)}
+                                    onClick={() => handleOpenDeleteConfirmation(post.post_id)} // Abrir pop-up
                                     disabled={post.user_id !== userId}
                                 >
                                     <FontAwesomeIcon icon={faTrash as IconProp} />
@@ -217,6 +226,16 @@ const Home: React.FC = () => {
             </div>
             {showAddPostForm && (
                 <AddPostForm onClose={handleCloseAddPostForm} onPostAdded={handlePostAdded} />
+            )}
+
+            {postToDelete && (
+                <div className="confirmation-popup">
+                    <div className="popup-content">
+                        <h2>Tem certeza que deseja excluir este post?</h2>
+                        <button onClick={() => handleDeletePost(postToDelete)}>Sim</button>
+                        <button onClick={handleCancelDelete}>Cancelar</button>
+                    </div>
+                </div>
             )}
         </div>
     );
