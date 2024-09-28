@@ -10,7 +10,8 @@ export const getAllByPostId = async (req: Request, res: Response) => {
 
         const comments = await Comment.findAll({
             where: { post_id: id_post },
-            include: [{ model: User, attributes: ['name'] }]
+            include: [{ model: User, attributes: ['name'] }],
+            order: [['comment_id', 'DESC']]
         });
 
         if(comments.length === 0) {

@@ -199,6 +199,7 @@ const Home: React.FC = () => {
                                     <CommentSection 
                                         id_post={post.post_id} 
                                         initialComments={[]} 
+                                        userId={userId}
                                     />
                                 </div>
                             )}
