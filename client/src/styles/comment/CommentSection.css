@@ -1,4 +1,4 @@
-.comments-section  {
+.comments-section {
     
 }
 
@@ -11,6 +11,8 @@
     border: 1px solid black;
     margin-top: 10px;
     border-radius: 10px;
+    padding: 10px;
+    position: relative; /* Necessário para que o botão seja posicionado corretamente */
 }
 
 .comments-section p {
@@ -19,4 +21,41 @@
 
 .comments-section small {
     font-weight: bold;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    background: none;
+    border: none;
+    font-size: 1rem; 
+    cursor: pointer;
+    color: white;
+    background-color: red;
+    padding: 7px;
+    border-radius: 3px;
+}
+
+.delete-btn:hover {
+    background-color: darkred; 
+}
+
+.confirm-btn {
+    font-size: 1.4rem;
+}
+
+.cancel-btn {
+    font-size: 1.4rem;    
+}
+
+.modal-overlay p {
+    font-size: 1.4rem;
+}
+
+.modal-overlay button {
+    margin: 0 10px;
+    padding: 7px 14px;
+    font-size: 1.4rem;
+    cursor: pointer;
 }
