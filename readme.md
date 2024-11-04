@@ -30,9 +30,11 @@ Tenha o npm, o mysql e o node Js instalados na sua máquina.
 
 2. Crie um arquivo .env e insira, nele, as variáveis do arquivo .env.example, que está na raíz do diretório backend. Obs: é necessário criar um banco de dados no mysql, na sua máquina local.
 
-3. Após isso, execute o arquivo para criar as tabelas no banco: $mysql -u seu_usuario_mysql -p nomedobanco -e "source ./src/database/connection_DB/create_tables.sql" 
+3. Para criar o banco de dados na sua máquina local, digite o comando: $mysql -u seu_usuario_mysql -p -e "CREATE DATABASE IF NOT EXISTS nomedobanco"
 
-4. Por fim, execute o comando $ npm start
+4. Após isso, execute o arquivo para criar as tabelas no banco: $mysql -u seu_usuario_mysql -p nomedobanco -e "source ./src/config/connection_DB/create_tables.sql" 
+
+5. Por fim, execute o comando $ npm start
 
 OBS: ainda irei atualizar o readme.md
 
